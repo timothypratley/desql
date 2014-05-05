@@ -1,0 +1,34 @@
+syntax         = (rule | comment)*
+rule           = <opt-whitespace> rule-name <opt-whitespace> <equals> <opt-whitespace> (expression | reserved) <line-end>
+comment        = opt-whitespace open-comment text close-comment
+open-comment   = "(*"
+close-comment  = "*)"
+line-end       = opt-whitespace EOL | line-end line-end
+opt-whitespace = (" " | "\t" | EOL)*
+whitespace     = (" " | "\t" | EOL)+
+equals         = "::="
+<expression>   = <opt-whitespace> list | <opt-whitespace> list <whitespace> <"|"> expression
+<list>         = term | term <whitespace> list
+<term>         = literal | rule-name
+rule-name      = <"<"> letter (letter | digit | "_" | " ")* <">">
+optional       = "[" expression "]"
+repeat         = "{" expression "}"
+literal        = '"' text '"' | "'" text "'" | identifier
+text           = (character | opt-whitespace)*
+identifier     = character+
+<character>    = letter | digit | symbol
+<letter>       = "A" | "B" | "C" | "D" | "E" | "F" | "G"
+               | "H" | "I" | "J" | "K" | "L" | "M" | "N"
+               | "O" | "P" | "Q" | "R" | "S" | "T" | "U"
+               | "V" | "W" | "X" | "Y" | "Z" | "a" | "b"
+               | "c" | "d" | "e" | "f" | "g" | "h" | "i"
+               | "j" | "k" | "l" | "m" | "n" | "o" | "p"
+               | "q" | "r" | "s" | "t" | "u" | "v" | "w"
+               | "x" | "y" | "z"
+<digit>        = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<symbol>       = "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">" | "#" | "@"
+               | "." | "," | ";" | ":" | "!" | "$"
+               | "%" | "&" | "*" | "?" | "_" | "+" | "-" | "/" | "^"
+               | "~" | "`" | "\\"
+<reserved>     = "|" | ":" | "=" | "'" | '"'
+EOL            = "\n" | "\r\n"
