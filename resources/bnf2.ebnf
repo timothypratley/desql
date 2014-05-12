@@ -1,5 +1,6 @@
 syntax         = (rule | comment)*
-rule           = <opt-whitespace> rule-name <opt-whitespace> <equals> <opt-whitespace> (expression | reserved) <line-end>
+rule           = <opt-whitespace> rule-name <opt-whitespace> <equals>
+                 <opt-whitespace> (expression | reserved) <line-end>
 comment        = opt-whitespace open-comment text close-comment
 open-comment   = "(*"
 close-comment  = "*)"
@@ -13,7 +14,8 @@ equals         = "::="
 rule-name      = <"<"> letter (letter | digit | "_" | " ")* <">">
 optional       = "[" expression "]"
 repeat         = "{" expression "}"
-literal        = '"' text '"' | "'" text "'" | identifier
+literal        = '"' ("'" | '\\"' | character | opt-whitespace)* '"'
+               | "'" ('"' | "\\'" | character | opt-whitespace)* "'" | identifier
 text           = (character | opt-whitespace)*
 identifier     = character+
 <character>    = letter | digit | symbol
@@ -30,5 +32,5 @@ identifier     = character+
                | "." | "," | ";" | ":" | "!" | "$"
                | "%" | "&" | "*" | "?" | "_" | "+" | "-" | "/" | "^"
                | "~" | "`" | "\\"
-<reserved>     = "|" | ":" | "=" | "'" | '"'
+reserved       = "|" | ":" | "=" | "'" | '"'
 EOL            = "\n" | "\r\n"
