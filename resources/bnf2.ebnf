@@ -1,23 +1,24 @@
 syntax         = (rule | comment)*
 rule           = <opt-whitespace> rule-name <opt-whitespace> <equals>
-                 <opt-whitespace> (expression | reserved) <line-end>
+                 <opt-whitespace> (expression | reserved | symbol) <line-end> <opt-whitespace>
 comment        = opt-whitespace open-comment text close-comment
 open-comment   = "(*"
 close-comment  = "*)"
-line-end       = opt-whitespace EOL | line-end line-end
-opt-whitespace = (" " | "\t" | EOL)*
-whitespace     = (" " | "\t" | EOL)+
+line-end       = (" " | "\t")* EOL
+opt-whitespace = #"\s*"
+whitespace     = #"\s+"
 equals         = "::="
 <expression>   = <opt-whitespace> list | <opt-whitespace> list <whitespace> <"|"> expression
 <list>         = term | term <whitespace> list
-<term>         = literal | rule-name
+<term>         = literal | rule-name | digit | symbol
 rule-name      = <"<"> letter (letter | digit | "_" | " ")* <">">
 optional       = "[" expression "]"
 repeat         = "{" expression "}"
 literal        = '"' ("'" | '\\"' | character | opt-whitespace)* '"'
-               | "'" ('"' | "\\'" | character | opt-whitespace)* "'" | identifier
+               | "'" ('"' | "\\'" | character | opt-whitespace)* "'"
+	       | identifier
 text           = (character | opt-whitespace)*
-identifier     = character+
+identifier     = #"[a-zA-Z][a-zA-Z0-9]*"
 <character>    = letter | digit | symbol
 <letter>       = "A" | "B" | "C" | "D" | "E" | "F" | "G"
                | "H" | "I" | "J" | "K" | "L" | "M" | "N"
@@ -29,7 +30,7 @@ identifier     = character+
                | "x" | "y" | "z"
 <digit>        = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 <symbol>       = "[" | "]" | "{" | "}" | "(" | ")" | "<" | ">" | "#" | "@"
-               | "." | "," | ";" | ":" | "!" | "$"
+               | "." | "," | ";" | "!" | "$"
                | "%" | "&" | "*" | "?" | "_" | "+" | "-" | "/" | "^"
                | "~" | "`" | "\\"
 reserved       = "|" | ":" | "=" | "'" | '"'
